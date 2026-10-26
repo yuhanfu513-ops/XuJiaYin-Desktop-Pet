@@ -1,0 +1,11 @@
+.DS_Store
+.swiftpm/
+.build/
+*.app/
+*.zip
+Backups/
+Work/
+*.dSYM/
+*.swiftdoc
+*.swiftmodule
+*.swiftsourceinfo
