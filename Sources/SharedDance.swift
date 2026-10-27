@@ -4,15 +4,10 @@ struct DancePose: Codable {
     let compression: Double
     let lift: Double
     static func at(_ time: Double, beats: [Double]) -> DancePose {
-        var lo = 0, hi = beats.count
-        while lo < hi { let mid = (lo+hi)/2; if beats[mid] <= time { lo = mid+1 } else { hi = mid } }
-        guard lo > 0 else { return DancePose(compression: 1, lift: 0) }
-        let elapsed = time-beats[lo-1]
-        guard elapsed >= 0 && elapsed < 0.48 else { return DancePose(compression: 1, lift: 0) }
-        let phase = elapsed/0.48
-        let squash = phase < 0.25 ? sin(phase/0.25 * .pi/2) : pow((1-phase)/0.75, 2)
-        let lift = phase > 0.25 ? sin((phase-0.25)/0.75 * .pi) : 0
-        return DancePose(compression: 1-0.15*squash, lift: 8*lift)
+        guard time.isFinite else { return DancePose(compression: 1, lift: 0) }
+        // 雷余桌宠每帧相位增加 0.50（30 fps）。按播放进度算相位，跨进程保持同步。
+        let pulse = (1-cos(time*15))/2
+        return DancePose(compression: 1-0.18*pulse, lift: 6.5*pulse)
     }
 }
 struct DanceState: Codable {
