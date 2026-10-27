@@ -75,7 +75,7 @@ final class Controller: NSObject, NSApplicationDelegate {
             bangyouRhythm = Rhythm(beats: try JSONDecoder().decode([Beat].self, from: Data(contentsOf: resources.appendingPathComponent("beats-bangyou.json"))))
             guard let dancePortrait = NSImage(contentsOf: resources.appendingPathComponent("portrait-bangyou.png")) else { throw NSError(domain: "邦友形象缺失", code: 1) }
             player.numberOfLoops = -1
-            player.volume = prefs.object(forKey: "volume") == nil ? 0.7 : prefs.float(forKey: "volume")
+            player.volume = prefs.object(forKey: "volume") == nil ? 0.65 : prefs.float(forKey: "volume")
             player.currentTime = min(max(0, prefs.double(forKey: "position")), max(0, player.duration - 0.01))
             player.prepareToPlay()
             bangyouPlayer.volume = player.volume
@@ -166,7 +166,7 @@ final class Controller: NSObject, NSApplicationDelegate {
         menu.addItem(.separator())
         let volumeItem = NSMenuItem(title: "音量", action: nil, keyEquivalent: "")
         let sub = NSMenu()
-        for v in [0,25,50,75,100] { let i = NSMenuItem(title: "\(v)%", action: #selector(volume(_:)), keyEquivalent: ""); i.target = self; i.tag = v; i.state = abs(player.volume-Float(v)/100)<0.01 ? .on : .off; sub.addItem(i) }
+        for v in [0,25,50,65,75,100] { let i = NSMenuItem(title: "\(v)%", action: #selector(volume(_:)), keyEquivalent: ""); i.target = self; i.tag = v; i.state = abs(player.volume-Float(v)/100)<0.01 ? .on : .off; sub.addItem(i) }
         volumeItem.submenu = sub; menu.addItem(volumeItem)
         let sizeItem = NSMenuItem(title: "头像大小", action: nil, keyEquivalent: "")
         let sizes = NSMenu()
